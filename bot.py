@@ -58,6 +58,8 @@ async def help(ctx):
                     value="Delete a specific pin", inline=False)
     embed.add_field(name="!show <board_name>",
                     value="Show the contents of a board", inline=False)
+    embed.add_field(name="!list",
+                    value="List all of the boards", inline=False)
     await ctx.send(embed=embed)
 
 
@@ -301,4 +303,4 @@ async def list(ctx):
     await ctx.send(embed=embed)
 
 # Bot token
-bot.run('# NEW TOKEN HERE')
+bot.run('')
