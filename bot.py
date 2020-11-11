@@ -184,10 +184,6 @@ async def delete_pin(ctx, name, pin_id):
     if board_name_ref.get().exists == False:
         await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"The following board: '{name}' does not exist! :slight_frown:"))
         return
-    # User cannot delete pin that they didn't post
-    if board_name_ref.get().to_dict()['createdBy'] != ctx.message.author.id:
-        await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"You cannot delete a pin that you didn't post! :slight_frown:"))
-        return
     # If there are no pins on the board, then let the user know
     try:
         messages_ref = board_name_ref.get().to_dict()['messages']
@@ -201,6 +197,11 @@ async def delete_pin(ctx, name, pin_id):
     # If an incorrect pin_id is specified, such as being out of range, then let the user know
     if(pin_id <= 0 or pin_id > len(messages_ref)):
         await ctx.send(embed=discord.Embed(color=discord.Color.red(), description="Ensure that you are entering a correct pin id! :pushpin::slight_frown:"))
+        return
+    # User cannot delete pin that they didn't post
+    admin = board_name_ref.get().to_dict()['createdBy']
+    if ctx.message.author.id != admin and messages_ref[pin_id-1]['postedBy'] != ctx.message.author.id:
+        await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"You cannot delete a pin that you didn't post! :slight_frown:"))
         return
     # Delete the pin and update the board
     del messages_ref[pin_id-1]
@@ -223,9 +224,6 @@ async def edit_pin(ctx, name, pin_id, *, message):
     if board_name_ref.get().exists == False:
         await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"The following board: '{name}' does not exist! :slight_frown:"))
         return
-    if board_name_ref.get().to_dict()['createdBy'] != ctx.message.author.id:
-        await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"You cannot delete a pin that you didn't post! :slight_frown:"))
-        return
     try:
         messages_ref = board_name_ref.get().to_dict()['messages']
     except:
@@ -237,6 +235,11 @@ async def edit_pin(ctx, name, pin_id, *, message):
         return
     if(pin_id <= 0 or pin_id > len(messages_ref)):
         await ctx.send(embed=discord.Embed(color=discord.Color.red(), description="Ensure that you are entering a correct pin id! :pushpin::slight_frown:"))
+        return
+    # User cannot delete pin that they didn't post
+    admin = board_name_ref.get().to_dict()['createdBy']
+    if ctx.message.author.id != admin and messages_ref[pin_id-1]['postedBy'] != ctx.message.author.id:
+        await ctx.send(embed=discord.Embed(color=discord.Color.red(), description=f"You cannot edit a pin that you didn't post! :slight_frown:"))
         return
     # Edit the pin based on the new message that was specified
     messages_ref[pin_id-1]['message'] = message
@@ -303,4 +306,4 @@ async def list(ctx):
     await ctx.send(embed=embed)
 
 # Bot token
-bot.run('')
+bot.run('NzY3NDk5MzM1MjM5NDY3MDA4.X4yzdA.MkeMmP5Oj33FEWr2vuV8pZBiT1w')
