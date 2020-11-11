@@ -306,4 +306,4 @@ async def list(ctx):
     await ctx.send(embed=embed)
 
 # Bot token
-bot.run('NzY3NDk5MzM1MjM5NDY3MDA4.X4yzdA.MkeMmP5Oj33FEWr2vuV8pZBiT1w')
+bot.run('token goes here')
